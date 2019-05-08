@@ -1,0 +1,47 @@
+package net.minecraft.data.server;
+
+import net.minecraft.advancement.criterion.LocationArrivalCriterion;
+import net.minecraft.world.gen.feature.StructureFeature;
+import net.minecraft.predicate.entity.LocationPredicate;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.advancement.criterion.CuredZombieVillagerCriterion;
+import net.minecraft.advancement.criterion.ChangedDimensionCriterion;
+import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.advancement.criterion.EntityHurtPlayerCriterion;
+import net.minecraft.predicate.entity.DamageSourcePredicate;
+import net.minecraft.predicate.DamagePredicate;
+import net.minecraft.advancement.criterion.EnchantedItemCriterion;
+import net.minecraft.advancement.CriteriaMerger;
+import net.minecraft.item.Items;
+import net.minecraft.advancement.criterion.CriterionConditions;
+import net.minecraft.advancement.criterion.InventoryChangedCriterion;
+import net.minecraft.text.TextComponent;
+import net.minecraft.item.ItemProvider;
+import net.minecraft.advancement.AdvancementFrame;
+import net.minecraft.util.Identifier;
+import net.minecraft.text.TranslatableTextComponent;
+import net.minecraft.block.Blocks;
+import net.minecraft.advancement.Advancement;
+import java.util.function.Consumer;
+
+public class StoryTabAdvancementGenerator implements Consumer<Consumer<Advancement>>
+{
+    public void a(final Consumer<Advancement> consumer) {
+        final Advancement advancement2 = Advancement.Task.create().display(Blocks.i, new TranslatableTextComponent("advancements.story.root.title", new Object[0]), new TranslatableTextComponent("advancements.story.root.description", new Object[0]), new Identifier("textures/gui/advancements/backgrounds/stone.png"), AdvancementFrame.TASK, false, false, false).criterion("crafting_table", InventoryChangedCriterion.Conditions.items(Blocks.bT)).build(consumer, "story/root");
+        final Advancement advancement3 = Advancement.Task.create().parent(advancement2).display(Items.jp, new TranslatableTextComponent("advancements.story.mine_stone.title", new Object[0]), new TranslatableTextComponent("advancements.story.mine_stone.description", new Object[0]), null, AdvancementFrame.TASK, true, true, false).criterion("get_stone", InventoryChangedCriterion.Conditions.items(Blocks.m)).build(consumer, "story/mine_stone");
+        final Advancement advancement4 = Advancement.Task.create().parent(advancement3).display(Items.jt, new TranslatableTextComponent("advancements.story.upgrade_tools.title", new Object[0]), new TranslatableTextComponent("advancements.story.upgrade_tools.description", new Object[0]), null, AdvancementFrame.TASK, true, true, false).criterion("stone_pickaxe", InventoryChangedCriterion.Conditions.items(Items.jt)).build(consumer, "story/upgrade_tools");
+        final Advancement advancement5 = Advancement.Task.create().parent(advancement4).display(Items.jk, new TranslatableTextComponent("advancements.story.smelt_iron.title", new Object[0]), new TranslatableTextComponent("advancements.story.smelt_iron.description", new Object[0]), null, AdvancementFrame.TASK, true, true, false).criterion("iron", InventoryChangedCriterion.Conditions.items(Items.jk)).build(consumer, "story/smelt_iron");
+        final Advancement advancement6 = Advancement.Task.create().parent(advancement5).display(Items.jb, new TranslatableTextComponent("advancements.story.iron_tools.title", new Object[0]), new TranslatableTextComponent("advancements.story.iron_tools.description", new Object[0]), null, AdvancementFrame.TASK, true, true, false).criterion("iron_pickaxe", InventoryChangedCriterion.Conditions.items(Items.jb)).build(consumer, "story/iron_tools");
+        final Advancement advancement7 = Advancement.Task.create().parent(advancement6).display(Items.jj, new TranslatableTextComponent("advancements.story.mine_diamond.title", new Object[0]), new TranslatableTextComponent("advancements.story.mine_diamond.description", new Object[0]), null, AdvancementFrame.TASK, true, true, false).criterion("diamond", InventoryChangedCriterion.Conditions.items(Items.jj)).build(consumer, "story/mine_diamond");
+        final Advancement advancement8 = Advancement.Task.create().parent(advancement5).display(Items.kz, new TranslatableTextComponent("advancements.story.lava_bucket.title", new Object[0]), new TranslatableTextComponent("advancements.story.lava_bucket.description", new Object[0]), null, AdvancementFrame.TASK, true, true, false).criterion("lava_bucket", InventoryChangedCriterion.Conditions.items(Items.kz)).build(consumer, "story/lava_bucket");
+        final Advancement advancement9 = Advancement.Task.create().parent(advancement5).display(Items.ka, new TranslatableTextComponent("advancements.story.obtain_armor.title", new Object[0]), new TranslatableTextComponent("advancements.story.obtain_armor.description", new Object[0]), null, AdvancementFrame.TASK, true, true, false).criteriaMerger(CriteriaMerger.OR).criterion("iron_helmet", InventoryChangedCriterion.Conditions.items(Items.jZ)).criterion("iron_chestplate", InventoryChangedCriterion.Conditions.items(Items.ka)).criterion("iron_leggings", InventoryChangedCriterion.Conditions.items(Items.kb)).criterion("iron_boots", InventoryChangedCriterion.Conditions.items(Items.kc)).build(consumer, "story/obtain_armor");
+        final Advancement advancement10 = Advancement.Task.create().parent(advancement7).display(Items.nZ, new TranslatableTextComponent("advancements.story.enchant_item.title", new Object[0]), new TranslatableTextComponent("advancements.story.enchant_item.description", new Object[0]), null, AdvancementFrame.TASK, true, true, false).criterion("enchanted_item", EnchantedItemCriterion.Conditions.any()).build(consumer, "story/enchant_item");
+        final Advancement advancement11 = Advancement.Task.create().parent(advancement8).display(Blocks.bJ, new TranslatableTextComponent("advancements.story.form_obsidian.title", new Object[0]), new TranslatableTextComponent("advancements.story.form_obsidian.description", new Object[0]), null, AdvancementFrame.TASK, true, true, false).criterion("obsidian", InventoryChangedCriterion.Conditions.items(Blocks.bJ)).build(consumer, "story/form_obsidian");
+        final Advancement advancement12 = Advancement.Task.create().parent(advancement9).display(Items.oW, new TranslatableTextComponent("advancements.story.deflect_arrow.title", new Object[0]), new TranslatableTextComponent("advancements.story.deflect_arrow.description", new Object[0]), null, AdvancementFrame.TASK, true, true, false).criterion("deflected_projectile", EntityHurtPlayerCriterion.Conditions.create(DamagePredicate.Builder.create().type(DamageSourcePredicate.Builder.create().projectile(true)).blocked(true))).build(consumer, "story/deflect_arrow");
+        final Advancement advancement13 = Advancement.Task.create().parent(advancement7).display(Items.ke, new TranslatableTextComponent("advancements.story.shiny_gear.title", new Object[0]), new TranslatableTextComponent("advancements.story.shiny_gear.description", new Object[0]), null, AdvancementFrame.TASK, true, true, false).criteriaMerger(CriteriaMerger.OR).criterion("diamond_helmet", InventoryChangedCriterion.Conditions.items(Items.kd)).criterion("diamond_chestplate", InventoryChangedCriterion.Conditions.items(Items.ke)).criterion("diamond_leggings", InventoryChangedCriterion.Conditions.items(Items.kf)).criterion("diamond_boots", InventoryChangedCriterion.Conditions.items(Items.kg)).build(consumer, "story/shiny_gear");
+        final Advancement advancement14 = Advancement.Task.create().parent(advancement11).display(Items.jd, new TranslatableTextComponent("advancements.story.enter_the_nether.title", new Object[0]), new TranslatableTextComponent("advancements.story.enter_the_nether.description", new Object[0]), null, AdvancementFrame.TASK, true, true, false).criterion("entered_nether", ChangedDimensionCriterion.Conditions.to(DimensionType.b)).build(consumer, "story/enter_the_nether");
+        final Advancement advancement15 = Advancement.Task.create().parent(advancement14).display(Items.kp, new TranslatableTextComponent("advancements.story.cure_zombie_villager.title", new Object[0]), new TranslatableTextComponent("advancements.story.cure_zombie_villager.description", new Object[0]), null, AdvancementFrame.GOAL, true, true, false).criterion("cured_zombie", CuredZombieVillagerCriterion.Conditions.any()).build(consumer, "story/cure_zombie_villager");
+        final Advancement advancement16 = Advancement.Task.create().parent(advancement14).display(Items.mt, new TranslatableTextComponent("advancements.story.follow_ender_eye.title", new Object[0]), new TranslatableTextComponent("advancements.story.follow_ender_eye.description", new Object[0]), null, AdvancementFrame.TASK, true, true, false).criterion("in_stronghold", LocationArrivalCriterion.Conditions.create(LocationPredicate.feature(Feature.STRONGHOLD))).build(consumer, "story/follow_ender_eye");
+        final Advancement advancement17 = Advancement.Task.create().parent(advancement16).display(Blocks.dW, new TranslatableTextComponent("advancements.story.enter_the_end.title", new Object[0]), new TranslatableTextComponent("advancements.story.enter_the_end.description", new Object[0]), null, AdvancementFrame.TASK, true, true, false).criterion("entered_end", ChangedDimensionCriterion.Conditions.to(DimensionType.c)).build(consumer, "story/enter_the_end");
+    }
+}
